@@ -1,0 +1,13 @@
+# Constraint: no-root
+# Activates the K8sNoRoot template for all Deployments.
+# Any Deployment whose containers do not set runAsNonRoot: true will be rejected.
+
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sNoRoot
+metadata:
+  name: no-root
+spec:
+  match:
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment"]

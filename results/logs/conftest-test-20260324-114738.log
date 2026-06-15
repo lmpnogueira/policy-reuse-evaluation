@@ -1,0 +1,92 @@
+###################################################################
+#  SECTION 1: GOOD MANIFESTS (should PASS all policies)          #
+###################################################################
+
+======================================================================
+[GOOD] tests\good\deployment-good.yaml
+----------------------------------------------------------------------
+
+[32m9 tests, 9 passed, 0 warnings, 0 failures, 0 exceptions[0m
+>> RESULT: PASS (as expected)
+
+###################################################################
+#  SECTION 2: BAD MANIFESTS (should FAIL with violations)        #
+###################################################################
+
+======================================================================
+[BAD] tests\bad\deployment-latest-tag.yaml
+----------------------------------------------------------------------
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-latest-tag.yaml - main - Container 'app' uses image 'nginx:latest' with ':latest' tag - use a pinned version instead
+
+[31m9 tests, 8 passed, 0 warnings, 1 failure, 0 exceptions[0m
+>> RESULT: FAIL (as expected - policy violations detected)
+
+======================================================================
+[BAD] tests\bad\deployment-multi-violation.yaml
+----------------------------------------------------------------------
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-multi-violation.yaml - main - Container 'app' must define resources.limits.cpu
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-multi-violation.yaml - main - Container 'app' must define resources.limits.memory
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-multi-violation.yaml - main - Container 'app' must define resources.requests.cpu
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-multi-violation.yaml - main - Container 'app' must define resources.requests.memory
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-multi-violation.yaml - main - Container 'app' must not run in privileged mode
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-multi-violation.yaml - main - Container 'app' must set securityContext.allowPrivilegeEscalation to false
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-multi-violation.yaml - main - Container 'app' must set securityContext.runAsNonRoot to true
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-multi-violation.yaml - main - Container 'app' uses image 'nginx:latest' with ':latest' tag - use a pinned version instead
+
+[31m9 tests, 1 passed, 0 warnings, 8 failures, 0 exceptions[0m
+>> RESULT: FAIL (as expected - policy violations detected)
+
+======================================================================
+[BAD] tests\bad\deployment-no-resources.yaml
+----------------------------------------------------------------------
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-no-resources.yaml - main - Container 'app' must define resources.limits.cpu
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-no-resources.yaml - main - Container 'app' must define resources.limits.memory
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-no-resources.yaml - main - Container 'app' must define resources.requests.cpu
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-no-resources.yaml - main - Container 'app' must define resources.requests.memory
+
+[31m9 tests, 5 passed, 0 warnings, 4 failures, 0 exceptions[0m
+>> RESULT: FAIL (as expected - policy violations detected)
+
+======================================================================
+[BAD] tests\bad\deployment-priv-escalation.yaml
+----------------------------------------------------------------------
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-priv-escalation.yaml - main - Container 'app' must set securityContext.allowPrivilegeEscalation to false
+
+[31m9 tests, 8 passed, 0 warnings, 1 failure, 0 exceptions[0m
+>> RESULT: FAIL (as expected - policy violations detected)
+
+======================================================================
+[BAD] tests\bad\deployment-privileged.yaml
+----------------------------------------------------------------------
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-privileged.yaml - main - Container 'app' must not run in privileged mode
+
+[31m9 tests, 8 passed, 0 warnings, 1 failure, 0 exceptions[0m
+>> RESULT: FAIL (as expected - policy violations detected)
+
+======================================================================
+[BAD] tests\bad\deployment-root.yaml
+----------------------------------------------------------------------
+[31mFAIL[0m - C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-root.yaml - main - Container 'app' must set securityContext.runAsNonRoot to true
+
+[31m9 tests, 8 passed, 0 warnings, 1 failure, 0 exceptions[0m
+>> RESULT: FAIL (as expected - policy violations detected)
+
+###################################################################
+#  SECTION 3: MULTI-VIOLATION DEEP CHECK                         #
+###################################################################
+
+File: deployment-multi-violation.yaml
+Violations found: 8
+>> RESULT: PASS - 8 violations detected (minimum expected: 5)
+
+###################################################################
+#  SUMMARY                                                       #
+###################################################################
+
+Total tests run      : 8
+Expected results     : 8
+Unexpected results   : 0
+
+Log saved to: C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\results\logs\conftest-test-20260324-114738.log
+
+>>> ALL TESTS BEHAVED AS EXPECTED <<<

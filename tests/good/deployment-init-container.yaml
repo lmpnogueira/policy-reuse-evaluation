@@ -1,0 +1,42 @@
+# Compliant Deployment with init container
+# Expected: PASS all policies (P1-P5)
+# Purpose: Policies iterate over spec.template.spec.containers[_] only.
+#   The init container (which has no securityContext and uses a tag-less image)
+#   must NOT trigger any deny rule. This proves the policies correctly
+#   scope to regular containers and do not evaluate initContainers.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: init-container-app
+  labels:
+    app: init-container-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: init-container-app
+  template:
+    metadata:
+      labels:
+        app: init-container-app
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: busybox
+          command: ["sh", "-c", "until nc -z db 5432; do sleep 1; done"]
+      containers:
+        - name: app
+          image: node:20-alpine
+          command: ["node", "server.js"]
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            privileged: false

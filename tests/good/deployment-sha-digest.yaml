@@ -1,0 +1,36 @@
+# Compliant Deployment using image digest instead of tag
+# Expected: PASS all policies (P1-P5)
+# Purpose: P4 checks for ':latest' suffix and missing ':'. A digest reference
+#   (image@sha256:...) contains ':' inside the digest but has no tag portion.
+#   This proves P4 does not false-positive on digest-based references.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sha-digest-app
+  labels:
+    app: sha-digest-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sha-digest-app
+  template:
+    metadata:
+      labels:
+        app: sha-digest-app
+    spec:
+      containers:
+        - name: app
+          image: nginx@sha256:6a5badb391c8f1e70de0e5e0e3e3bfbfc0e3b4c2d5e6f7a8b9c0d1e2f3a4b5c6
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            privileged: false

@@ -1,0 +1,85 @@
+
+======================================================================
+  STEP 1: Verify Gatekeeper is running
+======================================================================
+  gatekeeper-audit-7d6ff46b9b-6zdw7                1/1   Running   0     4h47m
+  gatekeeper-controller-manager-77b59cf685-6nds7   1/1   Running   0     4h39m
+  gatekeeper-controller-manager-77b59cf685-7td6m   1/1   Running   0     4h39m
+  gatekeeper-controller-manager-77b59cf685-8msbh   1/1   Running   0     4h39m
+
+  Gatekeeper is running.
+
+======================================================================
+  STEP 2: Apply ConstraintTemplates
+======================================================================
+  Applying: no-latest-tag-template.yaml
+    constrainttemplate.templates.gatekeeper.sh/k8snolatesttag unchanged
+  Applying: no-priv-escalation-template.yaml
+    constrainttemplate.templates.gatekeeper.sh/k8snoprivescalation unchanged
+  Applying: no-root-template.yaml
+    constrainttemplate.templates.gatekeeper.sh/k8snoroot unchanged
+
+  Waiting for CRDs to be established...
+    k8snoroot - READY
+    k8snoprivescalation - READY
+    k8snolatesttag - READY
+
+======================================================================
+  STEP 3: Apply Constraints
+======================================================================
+  Applying: no-latest-tag-constraint.yaml
+    k8snolatesttag.constraints.gatekeeper.sh/no-latest-tag unchanged
+  Applying: no-priv-escalation-constraint.yaml
+    k8snoprivescalation.constraints.gatekeeper.sh/no-priv-escalation unchanged
+  Applying: no-root-constraint.yaml
+    k8snoroot.constraints.gatekeeper.sh/no-root unchanged
+
+  Waiting 10 seconds for constraints to sync...
+
+======================================================================
+  STEP 4: Test GOOD manifest (expect ACCEPTED)
+======================================================================
+  File: tests/good/deployment-good.yaml
+  >> ACCEPTED (as expected)
+
+======================================================================
+  STEP 5: Test BAD manifests (expect REJECTED)
+======================================================================
+
+  File: tests/bad/deployment-root.yaml
+    [no-root] Container 'app' must set securityContext.runAsNonRoot to true
+  >> REJECTED (as expected)
+
+  File: tests/bad/deployment-priv-escalation.yaml
+    [no-priv-escalation] Container 'app' must set securityContext.allowPrivilegeEscalation to false
+  >> REJECTED (as expected)
+
+  File: tests/bad/deployment-latest-tag.yaml
+    [no-latest-tag] Container 'app' uses image 'nginx:latest' with ':latest' tag - use a pinned version
+  >> REJECTED (as expected)
+
+  File: tests/bad/deployment-multi-violation.yaml
+    [no-priv-escalation] Container 'app' must set securityContext.allowPrivilegeEscalation to false
+    [no-root] Container 'app' must set securityContext.runAsNonRoot to true
+    [no-latest-tag] Container 'app' uses image 'nginx:latest' with ':latest' tag - use a pinned version
+  >> REJECTED (as expected)
+
+======================================================================
+  STEP 6: Collect evidence
+======================================================================
+  Saved: results/evidence/constraints.yaml
+  Saved: results/evidence/constrainttemplates.yaml
+  Saved: results/evidence/gatekeeper-pods.txt
+
+======================================================================
+  SUMMARY
+======================================================================
+
+  Total tests        : 5
+  Expected results   : 5
+  Unexpected results : 0
+
+  Log:      C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\results\logs\gatekeeper-test-20260325-152857.log
+  Evidence: C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\results\evidence
+
+  >>> ALL GATEKEEPER TESTS PASSED <<<

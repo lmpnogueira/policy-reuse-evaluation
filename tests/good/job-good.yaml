@@ -1,0 +1,32 @@
+# Compliant Job
+# Expected: PASS all policies (P1-P5)
+# Purpose: Verify policies work on Job (same spec.template.spec.containers path)
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migration
+  labels:
+    app: db-migration
+spec:
+  template:
+    metadata:
+      labels:
+        app: db-migration
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: flyway/flyway:10.8
+          args: ["migrate"]
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            privileged: false

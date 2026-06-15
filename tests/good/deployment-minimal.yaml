@@ -1,0 +1,33 @@
+# Compliant Deployment with minimal but sufficient configuration
+# Expected: PASS all policies (P1-P5)
+# Purpose: Verify that a minimal Deployment still passes when all required fields are set
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minimal-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minimal-app
+  template:
+    metadata:
+      labels:
+        app: minimal-app
+    spec:
+      containers:
+        - name: app
+          image: alpine:3.19
+          command: ["sleep", "infinity"]
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "16Mi"
+            limits:
+              cpu: "50m"
+              memory: "32Mi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            privileged: false

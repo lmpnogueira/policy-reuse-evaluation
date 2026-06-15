@@ -1,0 +1,38 @@
+Overhead Measurement - 20260415-125503
+Iterations per operation: 5
+Good manifest: C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\good\deployment-good.yaml
+Bad manifest:  C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-root.yaml
+Policy dir:    C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\policies\kubernetes
+
+=== M1 - kubectl --dry-run=client (no policy) (5 iterations) ===
+  Run 1: 57.1 ms
+  Run 2: 57.4 ms
+  Run 3: 56.3 ms
+  Run 4: 54.5 ms
+  Run 5: 53.1 ms
+  --> Avg: 55.7 ms | Min: 53.1 ms | Max: 57.4 ms
+
+=== M2 - conftest test (all manifests) (5 iterations) ===
+  Run 1: 59.9 ms
+  Run 2: 54.1 ms
+  Run 3: 56.0 ms
+  Run 4: 54.2 ms
+  Run 5: 58.9 ms
+  --> Avg: 56.6 ms | Min: 54.1 ms | Max: 59.9 ms
+
+WARNING: No Kubernetes cluster detected - skipping M3/M4 (admission measurements)
+         Start Docker and kind cluster, then re-run to collect M3/M4 data.
+
+=== Summary ===
+
+ID   Operation                                       Avg (ms)   Min (ms)   Max (ms)
+--   ---------------------------------------------   --------   --------   --------
+M1   kubectl --dry-run=client (no policy)                55.7       53.1       57.4
+M2   conftest test (all manifests)                       56.6       54.1       59.9
+
+CSV saved to: C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\results\measurements\overhead-20260415-125503.csv
+Log saved to: C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\results\measurements\overhead-20260415-125503.log
+
+Conftest overhead vs. baseline: 0.9 ms (1.0x)
+
+Done.

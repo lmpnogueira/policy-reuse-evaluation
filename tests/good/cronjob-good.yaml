@@ -1,0 +1,27 @@
+# Negative control: CronJob
+# Expected: PASS - policies check spec.template.spec.containers, but
+#   CronJob uses spec.jobTemplate.spec.template.spec.containers
+# Purpose: Documents a second scope boundary (alongside bare Pod). The
+#   container intentionally uses busybox:latest to confirm that the deeper
+#   nesting path is not reached by the policies.
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cleanup-job
+  labels:
+    app: cleanup-job
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: cleanup-job
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: cleanup
+              image: busybox:latest
+              command: ["sh", "-c", "echo cleanup done"]

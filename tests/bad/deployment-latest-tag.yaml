@@ -1,0 +1,31 @@
+# Violates P4: image uses :latest tag instead of a pinned version
+# Expected: FAIL on no-latest-tag.rego only
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: latest-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: latest-app
+  template:
+    metadata:
+      labels:
+        app: latest-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:latest   # violation
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            privileged: false

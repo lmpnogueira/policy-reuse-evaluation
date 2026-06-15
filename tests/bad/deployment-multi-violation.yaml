@@ -1,0 +1,29 @@
+# Violates ALL policies: P1, P2, P3, P4, P5
+# Expected: FAIL on every .rego policy
+# - P1: runAsNonRoot: false
+# - P2: allowPrivilegeEscalation: true
+# - P3: no resources block
+# - P4: image uses :latest
+# - P5: privileged: true
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-bad-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-bad-app
+  template:
+    metadata:
+      labels:
+        app: multi-bad-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:latest   # P4
+          securityContext:
+            runAsNonRoot: false   # P1
+            allowPrivilegeEscalation: true   # P2
+            privileged: true   # P5

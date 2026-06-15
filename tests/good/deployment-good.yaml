@@ -1,0 +1,36 @@
+# Fully compliant Deployment manifest
+# Expected: PASS all policies (P1–P5)
+# - P1 runAsNonRoot: true
+# - P2 allowPrivilegeEscalation: false
+# - P3 resources defined (requests + limits)
+# - P4 image pinned to nginx:1.25.3
+# - P5 privileged: false
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secure-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: secure-app
+  template:
+    metadata:
+      labels:
+        app: secure-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.25.3
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            privileged: false

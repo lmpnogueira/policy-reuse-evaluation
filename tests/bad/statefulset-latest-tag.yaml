@@ -1,0 +1,36 @@
+# Violation: P4 - StatefulSet with :latest tag
+# Expected: FAIL - 1 violation (:latest tag)
+# Purpose: Verify policies apply equally to StatefulSet resources
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-bad
+  labels:
+    app: redis-bad
+spec:
+  serviceName: redis-bad
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-bad
+  template:
+    metadata:
+      labels:
+        app: redis-bad
+    spec:
+      containers:
+        - name: redis
+          image: redis:latest
+          ports:
+            - containerPort: 6379
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"

@@ -1,0 +1,64 @@
+﻿Conftest Evaluation Dataset Test Run
+Date: 2026-03-27 11:38:35
+Conftest version: Conftest: 0.67.1 OPA: 1.14.1
+
+======================================================================
+GOOD MANIFESTS (tests/good/)
+======================================================================
+
+81 tests, 81 passed, 0 warnings, 0 failures, 0 exceptions
+
+
+======================================================================
+BAD MANIFESTS (tests/bad/)
+======================================================================
+FAIL - tests\bad\deployment-privileged.yaml - main - Container 'app' must not run in privileged mode
+FAIL - tests\bad\deployment-root-and-escalation.yaml - main - Container 'app' must set securityContext.allowPrivilegeEscalation to false
+FAIL - tests\bad\deployment-root-and-escalation.yaml - main - Container 'app' must set securityContext.runAsNonRoot to true
+FAIL - tests\bad\deployment-no-tag.yaml - main - Container 'app' uses image 'nginx' without a tag - use a pinned version instead
+FAIL - tests\bad\deployment-partial-resources.yaml - main - Container 'app' must define resources.limits.cpu
+FAIL - tests\bad\deployment-partial-resources.yaml - main - Container 'app' must define resources.limits.memory
+FAIL - tests\bad\deployment-root.yaml - main - Container 'app' must set securityContext.runAsNonRoot to true
+FAIL - tests\bad\deployment-second-container-violation.yaml - main - Container 'sidecar' uses image 'fluentd:latest' with ':latest' tag - use a pinned version instead
+FAIL - tests\bad\deployment-three-violations.yaml - main - Container 'app' must set securityContext.allowPrivilegeEscalation to false
+FAIL - tests\bad\deployment-three-violations.yaml - main - Container 'app' must set securityContext.runAsNonRoot to true
+FAIL - tests\bad\deployment-three-violations.yaml - main - Container 'app' uses image 'nginx:latest' with ':latest' tag - use a pinned version instead
+FAIL - tests\bad\job-multi-violation.yaml - main - Container 'migrate' must define resources.limits.cpu
+FAIL - tests\bad\job-multi-violation.yaml - main - Container 'migrate' must define resources.limits.memory
+FAIL - tests\bad\job-multi-violation.yaml - main - Container 'migrate' must define resources.requests.cpu
+FAIL - tests\bad\job-multi-violation.yaml - main - Container 'migrate' must define resources.requests.memory
+FAIL - tests\bad\job-multi-violation.yaml - main - Container 'migrate' must set securityContext.runAsNonRoot to true
+FAIL - tests\bad\job-multi-violation.yaml - main - Container 'migrate' uses image 'flyway/flyway:latest' with ':latest' tag - use a pinned version instead
+FAIL - tests\bad\deployment-multi-container-mixed.yaml - main - Container 'sidecar' must define resources.limits.cpu
+FAIL - tests\bad\deployment-multi-container-mixed.yaml - main - Container 'sidecar' must define resources.limits.memory
+FAIL - tests\bad\deployment-multi-container-mixed.yaml - main - Container 'sidecar' must define resources.requests.cpu
+FAIL - tests\bad\deployment-multi-container-mixed.yaml - main - Container 'sidecar' must define resources.requests.memory
+FAIL - tests\bad\deployment-multi-container-mixed.yaml - main - Container 'sidecar' must set securityContext.runAsNonRoot to true
+FAIL - tests\bad\deployment-multi-container-mixed.yaml - main - Container 'sidecar' uses image 'fluentbit' without a tag - use a pinned version instead
+FAIL - tests\bad\deployment-multi-violation.yaml - main - Container 'app' must define resources.limits.cpu
+FAIL - tests\bad\deployment-multi-violation.yaml - main - Container 'app' must define resources.limits.memory
+FAIL - tests\bad\deployment-multi-violation.yaml - main - Container 'app' must define resources.requests.cpu
+FAIL - tests\bad\deployment-multi-violation.yaml - main - Container 'app' must define resources.requests.memory
+FAIL - tests\bad\deployment-multi-violation.yaml - main - Container 'app' must not run in privileged mode
+FAIL - tests\bad\deployment-multi-violation.yaml - main - Container 'app' must set securityContext.allowPrivilegeEscalation to false
+FAIL - tests\bad\deployment-multi-violation.yaml - main - Container 'app' must set securityContext.runAsNonRoot to true
+FAIL - tests\bad\deployment-multi-violation.yaml - main - Container 'app' uses image 'nginx:latest' with ':latest' tag - use a pinned version instead
+FAIL - tests\bad\deployment-no-resources.yaml - main - Container 'app' must define resources.limits.cpu
+FAIL - tests\bad\deployment-no-resources.yaml - main - Container 'app' must define resources.limits.memory
+FAIL - tests\bad\deployment-no-resources.yaml - main - Container 'app' must define resources.requests.cpu
+FAIL - tests\bad\deployment-no-resources.yaml - main - Container 'app' must define resources.requests.memory
+FAIL - tests\bad\deployment-no-security-context.yaml - main - Container 'app' must set securityContext.allowPrivilegeEscalation to false
+FAIL - tests\bad\deployment-no-security-context.yaml - main - Container 'app' must set securityContext.runAsNonRoot to true
+FAIL - tests\bad\deployment-priv-escalation.yaml - main - Container 'app' must set securityContext.allowPrivilegeEscalation to false
+FAIL - tests\bad\statefulset-latest-tag.yaml - main - Container 'redis' uses image 'redis:latest' with ':latest' tag - use a pinned version instead
+FAIL - tests\bad\deployment-latest-tag.yaml - main - Container 'app' uses image 'nginx:latest' with ':latest' tag - use a pinned version instead
+
+135 tests, 95 passed, 0 warnings, 40 failures, 0 exceptions
+
+
+======================================================================
+SUMMARY
+======================================================================
+Good manifests: 9 files (5 compliant workloads + 4 negative controls)
+Bad manifests: 15 files (10 single-violation + 5 multi-violation)
+Total manifests: 24

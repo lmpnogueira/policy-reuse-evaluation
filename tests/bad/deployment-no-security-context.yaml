@@ -1,0 +1,30 @@
+# Violation: P1 + P2 - securityContext omitted entirely
+# Expected: FAIL - 2 violations (runAsNonRoot defaults false, allowPrivilegeEscalation defaults true)
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: no-security-context-app
+  labels:
+    app: no-security-context-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: no-security-context-app
+  template:
+    metadata:
+      labels:
+        app: no-security-context-app
+    spec:
+      containers:
+        - name: app
+          image: node:20-alpine
+          command: ["node", "-e", "require('http').createServer((q,s)=>{s.end('ok')}).listen(3000)"]
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"

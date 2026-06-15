@@ -1,0 +1,34 @@
+# Violation: P1 + P2 - root user with privilege escalation
+# Expected: FAIL - 2 violations (runAsNonRoot not true, allowPrivilegeEscalation not false)
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: root-and-escalation
+  labels:
+    app: root-and-escalation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: root-and-escalation
+  template:
+    metadata:
+      labels:
+        app: root-and-escalation
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+          securityContext:
+            runAsNonRoot: false
+            allowPrivilegeEscalation: true
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"

@@ -1,0 +1,30 @@
+# Violation: P3 - has requests but missing limits
+# Expected: FAIL - 2 violations (missing cpu limit, missing memory limit)
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: partial-resources-app
+  labels:
+    app: partial-resources-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: partial-resources-app
+  template:
+    metadata:
+      labels:
+        app: partial-resources-app
+    spec:
+      containers:
+        - name: app
+          image: python:3.12-slim
+          command: ["python", "-m", "http.server", "8080"]
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"

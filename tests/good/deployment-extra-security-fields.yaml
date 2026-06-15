@@ -1,0 +1,45 @@
+# Compliant Deployment with additional securityContext fields
+# Expected: PASS all policies (P1-P5)
+# Purpose: Includes readOnlyRootFilesystem, runAsUser, runAsGroup, and
+#   capabilities.drop alongside the required P1/P2/P5 fields. Proves that
+#   extra securityContext keys do not interfere with object.get evaluation.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hardened-app
+  labels:
+    app: hardened-app
+    tier: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hardened-app
+  template:
+    metadata:
+      labels:
+        app: hardened-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.25.3
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL

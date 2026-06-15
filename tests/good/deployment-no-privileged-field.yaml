@@ -1,0 +1,36 @@
+# Compliant Deployment with privileged field omitted
+# Expected: PASS all policies (P1-P5)
+# Purpose: P5 checks sc.privileged == true; when the field is absent,
+#   object.get returns {} and the check does not match. This manifest
+#   proves that omitting the field is not treated as a violation.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: no-privileged-field-app
+  labels:
+    app: no-privileged-field-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: no-privileged-field-app
+  template:
+    metadata:
+      labels:
+        app: no-privileged-field-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.25.3
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            # privileged is intentionally absent

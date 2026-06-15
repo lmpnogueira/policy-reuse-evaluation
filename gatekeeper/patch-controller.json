@@ -1,0 +1,22 @@
+{
+  "spec": {
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "name": "manager",
+            "args": [
+              "--port=8443",
+              "--logtostderr",
+              "--exempt-namespace=gatekeeper-system",
+              "--operation=webhook",
+              "--operation=mutation-webhook",
+              "--operation=generate",
+              "--disable-opa-builtin={http.send}"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

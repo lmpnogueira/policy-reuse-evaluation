@@ -1,0 +1,13 @@
+# Constraint: no-latest-tag
+# Activates the K8sNoLatestTag template for all Deployments.
+# Any Deployment using the ":latest" tag or an untagged image will be rejected.
+
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sNoLatestTag
+metadata:
+  name: no-latest-tag
+spec:
+  match:
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment"]

@@ -1,0 +1,14 @@
+# Negative control: ConfigMap
+# Expected: PASS - policies only evaluate container specs
+# Purpose: Confirm policies do not false-positive on non-workload resources
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  labels:
+    app: secure-app
+data:
+  DATABASE_URL: "postgres://db:5432/app"
+  LOG_LEVEL: "info"
+  MAX_CONNECTIONS: "100"

@@ -1,0 +1,70 @@
+Overhead Measurement - 20260421-123458
+Iterations per operation: 20
+Good manifest: C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\good\deployment-good.yaml
+Bad manifest:  C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-root.yaml
+Policy dir:    C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\policies\kubernetes
+
+=== M1 - kubectl --dry-run=client (no policy) (20 iterations) ===
+  Run 1: 386.1 ms
+  Run 2: 58.0 ms
+  Run 3: 56.3 ms
+  Run 4: 55.5 ms
+  Run 5: 55.4 ms
+  Run 6: 55.3 ms
+  Run 7: 61.6 ms
+  Run 8: 57.3 ms
+  Run 9: 57.4 ms
+  Run 10: 56.0 ms
+  Run 11: 57.4 ms
+  Run 12: 57.0 ms
+  Run 13: 57.3 ms
+  Run 14: 55.0 ms
+  Run 15: 59.0 ms
+  Run 16: 58.9 ms
+  Run 17: 56.6 ms
+  Run 18: 58.4 ms
+  Run 19: 52.4 ms
+  Run 20: 55.1 ms
+  (first run discarded as warm-up; statistics over 19 runs)
+  --> Avg: 56.8 ms | Min: 52.4 ms | Max: 61.6 ms | SD: 1.9 ms
+
+=== M2 - conftest test (all manifests) (20 iterations) ===
+  Run 1: 361.9 ms
+  Run 2: 58.7 ms
+  Run 3: 59.6 ms
+  Run 4: 57.3 ms
+  Run 5: 54.4 ms
+  Run 6: 57.1 ms
+  Run 7: 58.8 ms
+  Run 8: 58.0 ms
+  Run 9: 56.9 ms
+  Run 10: 56.9 ms
+  Run 11: 56.3 ms
+  Run 12: 55.5 ms
+  Run 13: 56.3 ms
+  Run 14: 53.7 ms
+  Run 15: 54.0 ms
+  Run 16: 56.4 ms
+  Run 17: 54.8 ms
+  Run 18: 55.7 ms
+  Run 19: 54.2 ms
+  Run 20: 55.7 ms
+  (first run discarded as warm-up; statistics over 19 runs)
+  --> Avg: 56.3 ms | Min: 53.7 ms | Max: 59.6 ms | SD: 1.7 ms
+
+WARNING: No Kubernetes cluster detected - skipping M3/M4 (admission measurements)
+         Start Docker and kind cluster, then re-run to collect M3/M4 data.
+
+=== Summary ===
+
+ID   Operation                                       Avg (ms)   Min (ms)   Max (ms)    SD (ms)
+--   ---------------------------------------------   --------   --------   --------    -------
+M1   kubectl --dry-run=client (no policy)                56.8       52.4       61.6        1.9
+M2   conftest test (all manifests)                       56.3       53.7       59.6        1.7
+
+CSV saved to: C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\results\measurements\overhead-20260421-123458.csv
+Log saved to: C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\results\measurements\overhead-20260421-123458.log
+
+Conftest overhead vs. baseline: -0.5 ms (1.0x)
+
+Done.

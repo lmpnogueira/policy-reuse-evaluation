@@ -1,0 +1,3 @@
+﻿"Id","Operation","Iterations","AvgMs","MinMs","MaxMs","AllMs"
+"M1","kubectl --dry-run=client (no policy)","5","55.7","53.1","57.4","57.1;57.4;56.3;54.5;53.1"
+"M2","conftest test (all manifests)","5","56.6","54.1","59.9","59.9;54.1;56;54.2;58.9"

@@ -1,0 +1,13 @@
+# Constraint: no-priv-escalation
+# Activates the K8sNoPrivEscalation template for all Deployments.
+# Any Deployment whose containers do not set allowPrivilegeEscalation: false will be rejected.
+
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sNoPrivEscalation
+metadata:
+  name: no-priv-escalation
+spec:
+  match:
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment"]

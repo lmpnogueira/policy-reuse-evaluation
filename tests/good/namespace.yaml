@@ -1,0 +1,10 @@
+# Negative control: Namespace
+# Expected: PASS - policies only evaluate container specs
+# Purpose: Confirm policies do not false-positive on cluster-level resources
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: staging
+  labels:
+    environment: staging

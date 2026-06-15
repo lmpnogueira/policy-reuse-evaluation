@@ -1,0 +1,54 @@
+Overhead Measurement - 20260415-125234
+Iterations per operation: 5
+Good manifest: C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\good\deployment-good.yaml
+Bad manifest:  C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\tests\bad\deployment-root.yaml
+Policy dir:    C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\policies\kubernetes
+
+=== M1 - kubectl --dry-run=client (no policy) (5 iterations) ===
+  Run 1: 225.2 ms
+  Run 2: 59.8 ms
+  Run 3: 55.8 ms
+  Run 4: 58.3 ms
+  Run 5: 55.6 ms
+  --> Avg: 90.9 ms | Min: 55.6 ms | Max: 225.2 ms
+
+=== M2 - conftest test (all manifests) (5 iterations) ===
+  Run 1: 78.9 ms
+  Run 2: 59.7 ms
+  Run 3: 58.5 ms
+  Run 4: 57.1 ms
+  Run 5: 66.2 ms
+  --> Avg: 64.1 ms | Min: 57.1 ms | Max: 78.9 ms
+
+=== M3 - kubectl --dry-run=server (allowed) (5 iterations) ===
+  Run 1: 68.1 ms
+  Run 2: 55.9 ms
+  Run 3: 57.6 ms
+  Run 4: 60.7 ms
+  Run 5: 62.1 ms
+  --> Avg: 60.9 ms | Min: 55.9 ms | Max: 68.1 ms
+
+=== M4 - kubectl --dry-run=server (rejected) (5 iterations) ===
+  Run 1: 68.5 ms
+  Run 2: 59.3 ms
+  Run 3: 62.3 ms
+  Run 4: 56.3 ms
+  Run 5: 58.9 ms
+  --> Avg: 61.0 ms | Min: 56.3 ms | Max: 68.5 ms
+
+=== Summary ===
+
+ID   Operation                                       Avg (ms)   Min (ms)   Max (ms)
+--   ---------------------------------------------   --------   --------   --------
+M1   kubectl --dry-run=client (no policy)                90.9       55.6      225.2
+M2   conftest test (all manifests)                       64.1       57.1       78.9
+M3   kubectl --dry-run=server (allowed)                  60.9       55.9       68.1
+M4   kubectl --dry-run=server (rejected)                 61.0       56.3       68.5
+
+CSV saved to: C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\results\measurements\overhead-20260415-125234.csv
+Log saved to: C:\Users\alice\OneDrive\Documents\GitHub\dimei-pac-devsecops-pipeline-k8s\results\measurements\overhead-20260415-125234.log
+
+Conftest overhead vs. baseline: -26.8 ms (0.7x)
+Admission rejection delta vs. allowed: 0.1 ms
+
+Done.

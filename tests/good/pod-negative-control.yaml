@@ -1,0 +1,16 @@
+# Negative control: Pod (bare)
+# Expected: PASS - policies check spec.template.spec.containers, not spec.containers
+# Purpose: Verify that the policy path assumption (template-based workloads) is explicit
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod
+  labels:
+    purpose: debug
+spec:
+  restartPolicy: Never
+  containers:
+    - name: debug
+      image: busybox:latest
+      command: ["sh", "-c", "echo hello"]

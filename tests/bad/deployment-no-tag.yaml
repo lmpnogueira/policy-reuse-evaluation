@@ -1,0 +1,34 @@
+# Violation: P4 - image has no tag at all (no colon)
+# Expected: FAIL - 1 violation (image without explicit tag)
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: no-tag-app
+  labels:
+    app: no-tag-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: no-tag-app
+  template:
+    metadata:
+      labels:
+        app: no-tag-app
+    spec:
+      containers:
+        - name: app
+          image: nginx
+          ports:
+            - containerPort: 80
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"

@@ -1,0 +1,30 @@
+# ConstraintTemplate: K8sNoLatestTag
+# Enforces P4 - container images must not use the ":latest" tag or be untagged.
+# Gatekeeper evaluates this Rego at admission time against every matching resource.
+
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8snolatesttag
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sNoLatestTag
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8snolatesttag
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.template.spec.containers[_]
+          endswith(container.image, ":latest")
+          msg := sprintf("Container '%s' uses image '%s' with ':latest' tag - use a pinned version", [container.name, container.image])
+        }
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.template.spec.containers[_]
+          container.image != ""
+          not contains(container.image, ":")
+          msg := sprintf("Container '%s' uses image '%s' without a tag - use a pinned version", [container.name, container.image])
+        }

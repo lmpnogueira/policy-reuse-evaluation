@@ -1,0 +1,31 @@
+# Violates P1: runAsNonRoot is false (allows running as root)
+# Expected: FAIL on no-root.rego only
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: root-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: root-app
+  template:
+    metadata:
+      labels:
+        app: root-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.25.3
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          securityContext:
+            runAsNonRoot: false   # violation
+            allowPrivilegeEscalation: false
+            privileged: false

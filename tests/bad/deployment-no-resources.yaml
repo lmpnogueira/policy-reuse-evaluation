@@ -1,0 +1,24 @@
+# Violates P3: missing resources.requests and resources.limits
+# Expected: FAIL on resource-limits.rego only
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: no-resources-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: no-resources-app
+  template:
+    metadata:
+      labels:
+        app: no-resources-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.25.3
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            privileged: false

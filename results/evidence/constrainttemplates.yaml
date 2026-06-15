@@ -1,0 +1,189 @@
+﻿apiVersion: v1
+items:
+- apiVersion: templates.gatekeeper.sh/v1
+  kind: ConstraintTemplate
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"templates.gatekeeper.sh/v1","kind":"ConstraintTemplate","metadata":{"annotations":{},"name":"k8snolatesttag"},"spec":{"crd":{"spec":{"names":{"kind":"K8sNoLatestTag"}}},"targets":[{"rego":"package k8snolatesttag\n\nviolation[{\"msg\": msg}] {\n  container := input.review.object.spec.template.spec.containers[_]\n  endswith(container.image, \":latest\")\n  msg := sprintf(\"Container '%s' uses image '%s' with ':latest' tag - use a pinned version\", [container.name, container.image])\n}\n\nviolation[{\"msg\": msg}] {\n  container := input.review.object.spec.template.spec.containers[_]\n  container.image != \"\"\n  not contains(container.image, \":\")\n  msg := sprintf(\"Container '%s' uses image '%s' without a tag - use a pinned version\", [container.name, container.image])\n}\n","target":"admission.k8s.gatekeeper.sh"}]}}
+    creationTimestamp: "2026-03-25T15:18:48Z"
+    generation: 1
+    name: k8snolatesttag
+    resourceVersion: "14032"
+    uid: 9f247fcb-8d06-417e-bbce-991c9e789c39
+  spec:
+    crd:
+      spec:
+        names:
+          kind: K8sNoLatestTag
+        validation:
+          legacySchema: false
+    targets:
+    - rego: |
+        package k8snolatesttag
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.template.spec.containers[_]
+          endswith(container.image, ":latest")
+          msg := sprintf("Container '%s' uses image '%s' with ':latest' tag - use a pinned version", [container.name, container.image])
+        }
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.template.spec.containers[_]
+          container.image != ""
+          not contains(container.image, ":")
+          msg := sprintf("Container '%s' uses image '%s' without a tag - use a pinned version", [container.name, container.image])
+        }
+      target: admission.k8s.gatekeeper.sh
+  status:
+    byPod:
+    - id: gatekeeper-audit-7d6ff46b9b-6zdw7
+      observedGeneration: 1
+      operations:
+      - audit
+      - mutation-status
+      - status
+      templateUID: 9f247fcb-8d06-417e-bbce-991c9e789c39
+    - id: gatekeeper-controller-manager-77b59cf685-6nds7
+      observedGeneration: 1
+      operations:
+      - generate
+      - mutation-webhook
+      - webhook
+      templateUID: 9f247fcb-8d06-417e-bbce-991c9e789c39
+    - id: gatekeeper-controller-manager-77b59cf685-7td6m
+      observedGeneration: 1
+      operations:
+      - generate
+      - mutation-webhook
+      - webhook
+      templateUID: 9f247fcb-8d06-417e-bbce-991c9e789c39
+    - id: gatekeeper-controller-manager-77b59cf685-8msbh
+      observedGeneration: 1
+      operations:
+      - generate
+      - mutation-webhook
+      - webhook
+      templateUID: 9f247fcb-8d06-417e-bbce-991c9e789c39
+    created: true
+- apiVersion: templates.gatekeeper.sh/v1
+  kind: ConstraintTemplate
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"templates.gatekeeper.sh/v1","kind":"ConstraintTemplate","metadata":{"annotations":{},"name":"k8snoprivescalation"},"spec":{"crd":{"spec":{"names":{"kind":"K8sNoPrivEscalation"}}},"targets":[{"rego":"package k8snoprivescalation\n\nviolation[{\"msg\": msg}] {\n  container := input.review.object.spec.template.spec.containers[_]\n  not container.securityContext.allowPrivilegeEscalation == false\n  msg := sprintf(\"Container '%s' must set securityContext.allowPrivilegeEscalation to false\", [container.name])\n}\n","target":"admission.k8s.gatekeeper.sh"}]}}
+    creationTimestamp: "2026-03-25T15:18:48Z"
+    generation: 1
+    name: k8snoprivescalation
+    resourceVersion: "14037"
+    uid: f3d9d596-cb13-4d60-9264-d3ae12d5721e
+  spec:
+    crd:
+      spec:
+        names:
+          kind: K8sNoPrivEscalation
+        validation:
+          legacySchema: false
+    targets:
+    - rego: |
+        package k8snoprivescalation
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.template.spec.containers[_]
+          not container.securityContext.allowPrivilegeEscalation == false
+          msg := sprintf("Container '%s' must set securityContext.allowPrivilegeEscalation to false", [container.name])
+        }
+      target: admission.k8s.gatekeeper.sh
+  status:
+    byPod:
+    - id: gatekeeper-audit-7d6ff46b9b-6zdw7
+      observedGeneration: 1
+      operations:
+      - audit
+      - mutation-status
+      - status
+      templateUID: f3d9d596-cb13-4d60-9264-d3ae12d5721e
+    - id: gatekeeper-controller-manager-77b59cf685-6nds7
+      observedGeneration: 1
+      operations:
+      - generate
+      - mutation-webhook
+      - webhook
+      templateUID: f3d9d596-cb13-4d60-9264-d3ae12d5721e
+    - id: gatekeeper-controller-manager-77b59cf685-7td6m
+      observedGeneration: 1
+      operations:
+      - generate
+      - mutation-webhook
+      - webhook
+      templateUID: f3d9d596-cb13-4d60-9264-d3ae12d5721e
+    - id: gatekeeper-controller-manager-77b59cf685-8msbh
+      observedGeneration: 1
+      operations:
+      - generate
+      - mutation-webhook
+      - webhook
+      templateUID: f3d9d596-cb13-4d60-9264-d3ae12d5721e
+    created: true
+- apiVersion: templates.gatekeeper.sh/v1
+  kind: ConstraintTemplate
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"templates.gatekeeper.sh/v1","kind":"ConstraintTemplate","metadata":{"annotations":{},"name":"k8snoroot"},"spec":{"crd":{"spec":{"names":{"kind":"K8sNoRoot"}}},"targets":[{"rego":"package k8snoroot\n\nviolation[{\"msg\": msg}] {\n  container := input.review.object.spec.template.spec.containers[_]\n  not container.securityContext.runAsNonRoot == true\n  msg := sprintf(\"Container '%s' must set securityContext.runAsNonRoot to true\", [container.name])\n}\n","target":"admission.k8s.gatekeeper.sh"}]}}
+    creationTimestamp: "2026-03-25T15:18:48Z"
+    generation: 1
+    name: k8snoroot
+    resourceVersion: "14038"
+    uid: 6bcf6f1f-c3c9-44ae-a467-4ea7b02586f6
+  spec:
+    crd:
+      spec:
+        names:
+          kind: K8sNoRoot
+        validation:
+          legacySchema: false
+    targets:
+    - rego: |
+        package k8snoroot
+
+        violation[{"msg": msg}] {
+          container := input.review.object.spec.template.spec.containers[_]
+          not container.securityContext.runAsNonRoot == true
+          msg := sprintf("Container '%s' must set securityContext.runAsNonRoot to true", [container.name])
+        }
+      target: admission.k8s.gatekeeper.sh
+  status:
+    byPod:
+    - id: gatekeeper-audit-7d6ff46b9b-6zdw7
+      observedGeneration: 1
+      operations:
+      - audit
+      - mutation-status
+      - status
+      templateUID: 6bcf6f1f-c3c9-44ae-a467-4ea7b02586f6
+    - id: gatekeeper-controller-manager-77b59cf685-6nds7
+      observedGeneration: 1
+      operations:
+      - generate
+      - mutation-webhook
+      - webhook
+      templateUID: 6bcf6f1f-c3c9-44ae-a467-4ea7b02586f6
+    - id: gatekeeper-controller-manager-77b59cf685-7td6m
+      observedGeneration: 1
+      operations:
+      - generate
+      - mutation-webhook
+      - webhook
+      templateUID: 6bcf6f1f-c3c9-44ae-a467-4ea7b02586f6
+    - id: gatekeeper-controller-manager-77b59cf685-8msbh
+      observedGeneration: 1
+      operations:
+      - generate
+      - mutation-webhook
+      - webhook
+      templateUID: 6bcf6f1f-c3c9-44ae-a467-4ea7b02586f6
+    created: true
+kind: List
+metadata:
+  resourceVersion: ""
