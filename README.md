@@ -1,146 +1,238 @@
 # Reusing Policy-as-Code Across CI/CD and Kubernetes Admission Control
 
-This repository contains the replication package associated with the paper:
+This repository contains the complete replication package accompanying the paper:
 
 > **Reusing Policy-as-Code Across CI/CD and Kubernetes Admission Control: An Empirical Assessment of Governance Consistency**
 
-The repository provides the experimental artefacts used to evaluate the reuse of Policy-as-Code definitions across Continuous Integration (CI) validation and Kubernetes admission control. All policies, test cases, admission-control configurations, automation scripts, and evaluation results required to reproduce the study are included.
+The repository provides all artefacts required to reproduce the experimental evaluation presented in the paper, including reusable Policy-as-Code definitions, Kubernetes manifests, admission-control configurations, Continuous Integration workflows, experimental scenarios, automation scripts, and validation results.
 
-## Overview
+---
 
-Policy-as-Code (PaC) has emerged as an important mechanism for automating governance, security, and compliance enforcement within cloud-native software delivery pipelines. However, organisations frequently maintain separate policy implementations across different enforcement stages, increasing maintenance effort and creating opportunities for policy drift.
+# Overview
 
-This study evaluates a reusable multi-stage Policy-as-Code enforcement model in which the same Open Policy Agent (OPA) Rego policies are executed during:
+Policy-as-Code (PaC) has become an important approach for automating governance, security, and compliance within cloud-native software delivery pipelines. However, governance policies are frequently implemented independently across multiple validation stages, increasing maintenance effort and creating opportunities for policy drift.
 
-* Continuous Integration (CI) validation using Conftest;
-* Kubernetes admission control using OPA Gatekeeper.
+This study investigates whether a **shared policy-definition layer** can be reused consistently across complementary enforcement stages while preserving governance enforcement throughout the software delivery lifecycle.
 
-The evaluation investigates:
+The proposed reusable multi-stage Policy-as-Code enforcement model evaluates identical Rego policy definitions during:
 
-1. Automatic detection of insecure Kubernetes configurations;
-2. Governance assurance through multi-stage enforcement;
-3. Mitigation of CI bypass scenarios through Kubernetes admission control.
+- Continuous Integration (CI) validation using **Conftest**
+- Kubernetes admission control using **OPA Gatekeeper**
 
-## Repository Structure
+Rather than introducing a new policy language or policy engine, the study evaluates the practical feasibility of policy reuse across complementary enforcement stages.
+
+The experimental evaluation investigates:
+
+- automatic detection of insecure Kubernetes configurations;
+- governance assurance through multi-stage enforcement;
+- mitigation of CI bypass scenarios through deployment-time admission control.
+
+---
+
+# Repository Highlights
+
+- Complete replication package
+- Shared Policy-as-Code definition layer
+- 29 Kubernetes manifests
+- 37 experimental scenarios
+- 8 Kubernetes resource types
+- 5 governance policies
+- 9 reusable Rego `deny` rules
+- 261 policy assertions
+- GitHub Actions CI workflows
+- OPA Gatekeeper admission-control configuration
+- Complete experimental results
+
+---
+
+# Repository Structure
 
 ```text
 .
-├── docs/                  # Supporting documentation
-├── gatekeeper/            # Gatekeeper ConstraintTemplates and Constraints
+├── docs/                      # Supporting documentation
+├── gatekeeper/                # ConstraintTemplates and Constraints
 ├── policies/
-│   └── kubernetes/        # Rego policy definitions
-├── results/              # Experimental outputs and validation results
-├── scripts/              # Automation and execution scripts
-├── tests/                # Evaluation manifests and test scenarios
+│   └── kubernetes/            # Shared Rego policy definitions
+├── results/                   # Experimental outputs
+├── scripts/                   # Automation scripts
+├── tests/                     # Kubernetes manifests and scenarios
+├── .github/
+│   └── workflows/             # GitHub Actions workflows (if available)
 └── README.md
 ```
 
-### Directory Description
+## Directory Description
 
-| Directory              | Purpose                                                                                                                              |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `docs/`                | Supporting documentation describing the evaluation artefacts and execution process.                                                  |
-| `gatekeeper/`          | OPA Gatekeeper ConstraintTemplates and Constraints used during admission-control validation.                                         |
-| `policies/kubernetes/` | Reusable Rego policies evaluated across both enforcement stages.                                                                     |
-| `results/`             | Validation outputs and experimental results generated during the study.                                                              |
-| `scripts/`             | Helper scripts used to execute validation workflows and collect results.                                                             |
-| `tests/`               | Kubernetes manifests used throughout the evaluation, including compliant configurations, policy violations, and CI bypass scenarios. |
+| Directory | Description |
+|------------|-------------|
+| `docs/` | Documentation describing the experimental artefacts and evaluation process. |
+| `gatekeeper/` | OPA Gatekeeper ConstraintTemplates and Constraints used during deployment-time validation. |
+| `policies/kubernetes/` | Shared Rego policy-definition layer reused across all enforcement stages. |
+| `results/` | Experimental outputs and validation results. |
+| `scripts/` | Helper scripts for executing experiments and collecting results. |
+| `tests/` | Kubernetes manifests covering compliant workloads, policy violations, and CI bypass scenarios. |
+| `.github/workflows/` | Continuous Integration workflows (when available). |
 
-Together, these artefacts provide the materials required to reproduce the experimental evaluation presented in the paper.
+Together, these artefacts enable complete reproduction of the experimental evaluation presented in the paper.
 
-## Experimental Dataset
+---
 
-The evaluation dataset comprises:
+# Experimental Workflow
 
-| Item                      | Value |
-| ------------------------- | ----- |
-| Kubernetes manifests      | 29    |
-| Experimental scenarios    | 37    |
-| Kubernetes resource types | 8     |
-| Governance policies       | 5     |
-| Rego deny rules           | 9     |
-| Policy assertions         | 261   |
+The evaluation follows the workflow below:
+
+```text
+Evaluation Dataset
+        │
+        ▼
+Shared Policy-Definition Layer (Rego)
+        │
+        ├──────────────┐
+        ▼              ▼
+CI Validation      Admission Control
+(Conftest)         (OPA Gatekeeper)
+        │              │
+        └──────┬───────┘
+               ▼
+Experimental Results
+               ▼
+Evaluation Metrics
+               ▼
+Research Questions
+```
+
+The same Rego policy definitions are reused throughout the evaluation. Consequently, any observed differences arise from the execution context rather than from differences in policy implementation.
+
+---
+
+# Experimental Dataset
+
+The experimental dataset comprises:
+
+| Item | Value |
+|------|------:|
+| Kubernetes manifests | 29 |
+| Experimental scenarios | 37 |
+| Kubernetes resource types | 8 |
+| Governance policies | 5 |
+| Rego `deny` rules | 9 |
+| Policy assertions | 261 |
 
 The dataset includes:
 
-* compliant workloads;
-* negative-control resources;
-* single-policy violations;
-* multi-policy violations;
-* CI bypass scenarios.
+- compliant workloads;
+- negative-control resources;
+- single-policy violations;
+- multi-policy violations;
+- CI bypass scenarios.
 
-## Governance Policies
+Every experimental scenario specifies its expected outcome **a priori**, enabling objective and reproducible evaluation of policy behaviour.
 
-The evaluation considers five representative Kubernetes governance policies:
+---
 
-| Policy ID | Description                           |
-| --------- | ------------------------------------- |
-| P1        | No Root Execution                     |
-| P2        | No Privilege Escalation               |
-| P3        | Resource Requests and Limits Required |
-| P4        | No Mutable Image Tags (`latest`)      |
-| P5        | No Privileged Containers              |
+# Governance Policies
 
-These policies are implemented as reusable Rego definitions and evaluated across multiple enforcement stages.
+The evaluation considers five representative Kubernetes governance policies.
 
-## Reproducing the Evaluation
+| Policy | Description | CI | Admission Control |
+|---------|-------------|:--:|:----------------:|
+| P1 | No Root Execution | ✓ | ✓ |
+| P2 | No Privilege Escalation | ✓ | ✓ |
+| P3 | Resource Requests and Limits Required | ✓ | – |
+| P4 | No Mutable Image Tags (`latest`) | ✓ | ✓ |
+| P5 | No Privileged Containers | ✓ | – |
 
-### CI Validation
+The policies implemented exclusively during Continuous Integration reflect the implementation scope adopted for the evaluated proof-of-concept rather than limitations of OPA Gatekeeper or of the proposed architectural model.
 
-Policy validation can be executed using Conftest and the policies available under `policies/kubernetes/`.
+---
 
-Example:
+# Reproducing the Evaluation
+
+## 1. Continuous Integration Validation
+
+Execute Conftest against the evaluation dataset:
 
 ```bash
 conftest test tests/
 ```
 
-Validation failures generate policy-violation reports suitable for integration into CI/CD pipelines.
+Policy violations are reported immediately, reproducing the Continuous Integration validation stage described in the paper.
 
-### Kubernetes Admission Control
+---
 
-Admission-control validation is performed using OPA Gatekeeper.
+## 2. Deploy OPA Gatekeeper
 
-Deploy Gatekeeper and apply the ConstraintTemplates and Constraints contained in the `gatekeeper/` directory:
+Install Gatekeeper and deploy the ConstraintTemplates and Constraints:
 
 ```bash
 kubectl apply -f gatekeeper/
 ```
 
-Evaluation manifests from the `tests/` directory can then be submitted to the cluster to reproduce the admission-control scenarios used in the study.
+---
 
-## Research Questions
+## 3. Execute Admission-Control Validation
 
-The experimental evaluation addresses the following research questions:
+Submit the Kubernetes manifests contained in `tests/` to the cluster.
 
-**RQ1:** Can Policy-as-Code enforcement detect insecure Kubernetes configurations automatically?
+Admission decisions are evaluated through Kubernetes validating admission webhooks using the same governance requirements implemented in the shared Rego policy-definition layer.
 
-**RQ2:** Does multi-stage enforcement strengthen governance assurance compared with reliance on a single enforcement boundary?
+---
 
-**RQ3:** Can Kubernetes admission control mitigate governance failures caused by CI bypass scenarios?
+## 4. Compare Results
 
-## Replication Artefacts
+Compare the observed policy decisions with the expected outcomes provided in the experimental scenarios.
 
-This repository includes:
+The evaluation metrics reported in the paper (Detection Rate, False Positive Rate, False Negative Rate, Policy Coverage, and CI Bypass Protection) can then be reproduced.
 
-* reusable Rego policies;
-* Kubernetes evaluation manifests;
-* Gatekeeper admission-control configurations;
-* experimental scenarios;
-* automation scripts;
-* validation outputs;
-* supporting documentation.
+---
 
-These artefacts are intended to support transparency, reproducibility, and independent verification of the results reported in the paper.
+# Research Questions
 
-## Citation
+The experimental evaluation addresses the following research questions.
+
+**RQ1**
+
+Can reusable Policy-as-Code definitions accurately detect insecure Kubernetes configurations automatically?
+
+**RQ2**
+
+Does multi-stage Policy-as-Code enforcement provide broader governance coverage than single-stage enforcement?
+
+**RQ3**
+
+Can Kubernetes admission control mitigate governance failures caused by CI bypass scenarios?
+
+---
+
+# Replication Artefacts
+
+The repository includes:
+
+- reusable Rego policy definitions;
+- Kubernetes evaluation manifests;
+- GitHub Actions workflows;
+- OPA Gatekeeper ConstraintTemplates and Constraints;
+- experimental scenarios;
+- automation scripts;
+- validation outputs;
+- supporting documentation.
+
+Together, these artefacts enable independent reproduction of all experiments and verification of the empirical results reported in the associated paper.
+
+---
+
+# Citation
 
 If you use this repository in academic work, please cite the associated paper.
 
 ```text
-[ Citation details will be added upon publication. ]
+Citation information will be updated after publication.
 ```
 
-## License
+---
 
-This repository is released for research and educational purposes. Please refer to the repository license for usage conditions.
+# License
+
+This repository is released for research and educational purposes.
+
+Please refer to the repository license for the applicable usage conditions.
