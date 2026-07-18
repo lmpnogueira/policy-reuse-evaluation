@@ -1,8 +1,14 @@
 # Reusing Policy-as-Code Across CI/CD and Kubernetes Admission Control
 
-This repository contains the complete replication package accompanying the paper:
+[![Paper](https://img.shields.io/badge/Paper-MDPI%20Computers-blue)](https://www.mdpi.com/2073-431X/15/7/453)
+[![DOI](https://img.shields.io/badge/DOI-10.3390/computers15070453-blue)](https://doi.org/10.3390/computers15070453)
 
-> **Reusing Policy-as-Code Across CI/CD and Kubernetes Admission Control: An Empirical Assessment of Governance Consistency**
+This repository contains the **official replication package** accompanying the paper:
+
+> **Reusing Policy-as-Code Across CI/CD and Kubernetes Admission Control: An Empirical Assessment of Governance Consistency**  
+> **Luís Nogueira** and **Jorge Coelho**  
+> *Computers*, **2026**, 15(7), 453  
+> https://doi.org/10.3390/computers15070453
 
 The repository provides all artefacts required to reproduce the experimental evaluation presented in the paper, including reusable Policy-as-Code definitions, Kubernetes manifests, admission-control configurations, Continuous Integration workflows, experimental scenarios, automation scripts, and validation results.
 
@@ -10,16 +16,16 @@ The repository provides all artefacts required to reproduce the experimental eva
 
 # Overview
 
-Policy-as-Code (PaC) has become an important approach for automating governance, security, and compliance within cloud-native software delivery pipelines. However, governance policies are frequently implemented independently across multiple validation stages, increasing maintenance effort and creating opportunities for policy drift.
+Policy-as-Code (PaC) has become an important approach for automating governance, security, and compliance throughout cloud-native software delivery pipelines. However, equivalent governance policies are frequently implemented independently across multiple validation stages, increasing maintenance effort and creating opportunities for policy drift.
 
-This study investigates whether a **shared policy-definition layer** can be reused consistently across complementary enforcement stages while preserving governance enforcement throughout the software delivery lifecycle.
+This work investigates whether a **shared policy-definition layer** can be reused consistently across complementary enforcement stages while preserving governance enforcement throughout the software delivery lifecycle.
 
 The proposed reusable multi-stage Policy-as-Code enforcement model evaluates identical Rego policy definitions during:
 
 - Continuous Integration (CI) validation using **Conftest**
 - Kubernetes admission control using **OPA Gatekeeper**
 
-Rather than introducing a new policy language or policy engine, the study evaluates the practical feasibility of policy reuse across complementary enforcement stages.
+Rather than introducing a new policy language, policy engine, or enforcement framework, the study empirically evaluates the practical feasibility of policy reuse across complementary enforcement stages.
 
 The experimental evaluation investigates:
 
@@ -31,7 +37,7 @@ The experimental evaluation investigates:
 
 # Repository Highlights
 
-- Complete replication package
+- Official replication package accompanying the published paper
 - Shared Policy-as-Code definition layer
 - 29 Kubernetes manifests
 - 37 experimental scenarios
@@ -57,7 +63,7 @@ The experimental evaluation investigates:
 ├── scripts/                   # Automation scripts
 ├── tests/                     # Kubernetes manifests and scenarios
 ├── .github/
-│   └── workflows/             # GitHub Actions workflows (if available)
+│   └── workflows/             # GitHub Actions workflows
 └── README.md
 ```
 
@@ -71,15 +77,13 @@ The experimental evaluation investigates:
 | `results/` | Experimental outputs and validation results. |
 | `scripts/` | Helper scripts for executing experiments and collecting results. |
 | `tests/` | Kubernetes manifests covering compliant workloads, policy violations, and CI bypass scenarios. |
-| `.github/workflows/` | Continuous Integration workflows (when available). |
+| `.github/workflows/` | GitHub Actions workflows implementing Continuous Integration validation. |
 
 Together, these artefacts enable complete reproduction of the experimental evaluation presented in the paper.
 
 ---
 
 # Experimental Workflow
-
-The evaluation follows the workflow below:
 
 ```text
 Evaluation Dataset
@@ -107,8 +111,6 @@ The same Rego policy definitions are reused throughout the evaluation. Consequen
 
 # Experimental Dataset
 
-The experimental dataset comprises:
-
 | Item | Value |
 |------|------:|
 | Kubernetes manifests | 29 |
@@ -126,13 +128,11 @@ The dataset includes:
 - multi-policy violations;
 - CI bypass scenarios.
 
-Every experimental scenario specifies its expected outcome **a priori**, enabling objective and reproducible evaluation of policy behaviour.
+Every experimental scenario specifies its expected outcome *a priori*, enabling objective and reproducible evaluation of policy behaviour.
 
 ---
 
 # Governance Policies
-
-The evaluation considers five representative Kubernetes governance policies.
 
 | Policy | Description | CI | Admission Control |
 |---------|-------------|:--:|:----------------:|
@@ -150,19 +150,13 @@ The policies implemented exclusively during Continuous Integration reflect the i
 
 ## 1. Continuous Integration Validation
 
-Execute Conftest against the evaluation dataset:
-
 ```bash
 conftest test tests/
 ```
 
-Policy violations are reported immediately, reproducing the Continuous Integration validation stage described in the paper.
-
 ---
 
 ## 2. Deploy OPA Gatekeeper
-
-Install Gatekeeper and deploy the ConstraintTemplates and Constraints:
 
 ```bash
 kubectl apply -f gatekeeper/
@@ -190,15 +184,15 @@ The evaluation metrics reported in the paper (Detection Rate, False Positive Rat
 
 The experimental evaluation addresses the following research questions.
 
-**RQ1**
+### RQ1
 
 Can reusable Policy-as-Code definitions accurately detect insecure Kubernetes configurations automatically?
 
-**RQ2**
+### RQ2
 
-Does multi-stage Policy-as-Code enforcement provide broader governance coverage than single-stage enforcement?
+Can reusable Policy-as-Code definitions be enforced consistently across Continuous Integration validation and Kubernetes admission control?
 
-**RQ3**
+### RQ3
 
 Can Kubernetes admission control mitigate governance failures caused by CI bypass scenarios?
 
@@ -217,22 +211,31 @@ The repository includes:
 - validation outputs;
 - supporting documentation.
 
-Together, these artefacts enable independent reproduction of all experiments and verification of the empirical results reported in the associated paper.
+Together, these artefacts enable independent reproduction of all experiments and verification of the empirical results reported in the accompanying paper.
 
 ---
 
 # Citation
 
-If you use this repository in academic work, please cite the associated paper.
+If you use this repository in your research, please cite:
 
-```text
-Citation information will be updated after publication.
+```bibtex
+@Article{computers15070453,
+  AUTHOR  = {Nogueira, Luís and Coelho, Jorge},
+  TITLE   = {Reusing Policy-as-Code Across CI/CD and Kubernetes Admission Control: An Empirical Assessment of Governance Consistency},
+  JOURNAL = {Computers},
+  YEAR    = {2026},
+  VOLUME  = {15},
+  NUMBER  = {7},
+  ARTICLE-NUMBER = {453},
+  DOI     = {10.3390/computers15070453}
+}
 ```
 
 ---
 
 # License
 
-This repository is released for research and educational purposes.
+This repository is distributed under the **MIT License**.
 
-Please refer to the repository license for the applicable usage conditions.
+If you use this replication package in academic work, please cite the accompanying paper.
